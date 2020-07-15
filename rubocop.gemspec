@@ -42,7 +42,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency('ruby-progressbar', '~> 1.7')
   s.add_runtime_dependency('unicode-display_width', '~> 1.0', '>= 1.0.1')
 
-  s.add_development_dependency('bundler', '~> 1.3')
+  s.add_development_dependency('bundler', '~> 2')
   s.add_development_dependency('rack', '>= 2.0')
 end
 # rubocop:enable Metrics/BlockLength

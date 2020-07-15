@@ -46,7 +46,13 @@ module RuboCop
 
       def cops
         only_options = @options.fetch(:only, [])
-        @cops ||= @cop_classes.enabled(@config, only_options).map do |cop_class|
+        classes = @cop_classes.enabled(@config, only_options)
+        hash_align = classes.find_index { |c| c.name == 'RuboCop::Cop::Layout::AlignHash'}
+        hash_syntax = classes.find_index { |c| c.name == 'RuboCop::Cop::Style::HashSyntax'}
+        if hash_align && hash_syntax
+          classes[hash_align], classes[hash_syntax] = classes[hash_syntax], classes[hash_align]
+        end
+        @cops ||= classes.map do |cop_class|
           cop_class.new(@config, @options)
         end
       end
