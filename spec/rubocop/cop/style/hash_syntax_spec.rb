@@ -343,23 +343,24 @@ RSpec.describe RuboCop::Cop::Style::HashSyntax, :config do
 
       context 'with Layout/HashAlignment' do
         let(:run_first) { [RuboCop::Cop::Layout::HashAlignment] }
-        it 'should not conflict' do
+
+        it 'does not conflict' do
           expect_offense(<<~RUBY)
-some_method(a: 'abc', b: 'abc',
-                      ^^ Use hash rockets syntax.
-            ^^ Use hash rockets syntax.
-        c: 'abc', d: 'abc'
-                  ^^ Use hash rockets syntax.
-        ^^ Use hash rockets syntax.
-        ^^^^^^^^ Align the keys of a hash literal if they span more than one line.
-        )
-      RUBY
+            some_method(a: 'abc', b: 'abc',
+                                  ^^ Use hash rockets syntax.
+                        ^^ Use hash rockets syntax.
+                    c: 'abc', d: 'abc'
+                              ^^ Use hash rockets syntax.
+                    ^^ Use hash rockets syntax.
+                    ^^^^^^^^ Align the keys of a hash literal if they span more than one line.
+                    )
+          RUBY
 
           expect_correction(<<~RUBY)
-some_method(:a => 'abc', :b => 'abc',
-            :c => 'abc', :d => 'abc'
-        )
-      RUBY
+            some_method(:a => 'abc', :b => 'abc',
+                        :c => 'abc', :d => 'abc'
+                    )
+          RUBY
         end
       end
     end
@@ -681,5 +682,4 @@ some_method(:a => 'abc', :b => 'abc',
       expect(new_source).to eq('{ :a => 1, "b" => 2 }')
     end
   end
-
 end

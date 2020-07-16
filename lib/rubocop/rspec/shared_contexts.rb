@@ -96,11 +96,11 @@ RSpec.shared_context 'config', :config do # rubocop:disable Metrics/BlockLength
              cop_class.cop_name => cur_cop_config }.merge!(other_cops)
     run_first.each do |run_first_cop|
       run_first_cop_config = RuboCop::ConfigLoader
-                               .default_configuration.for_cop(run_first_cop)
-                               .merge({
-                                        'Enabled' => true, # in case it is 'pending'
-                                        'AutoCorrect' => true # in case defaults set it to false
-      }).merge(other_cops[run_first_cop.badge.to_s] || {})
+                             .default_configuration.for_cop(run_first_cop)
+                             .merge({
+                                      'Enabled' => true, # in case it is 'pending'
+                                      'AutoCorrect' => true # in case defaults set it to false
+                                    }).merge(other_cops[run_first_cop.badge.to_s] || {})
       hash.merge!(run_first_cop.badge.to_s => run_first_cop_config)
     end
 
@@ -120,7 +120,6 @@ RSpec.shared_context 'config', :config do # rubocop:disable Metrics/BlockLength
       end
     end
   end
-
 end
 
 RSpec.shared_context 'mock console output' do
