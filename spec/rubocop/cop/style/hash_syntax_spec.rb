@@ -24,6 +24,15 @@ RSpec.describe RuboCop::Cop::Style::HashSyntax, :config do
 
       let(:cop_config_overrides) { {} }
 
+      let(:other_cops) do
+        {
+          'Layout/HashAlignment' => {
+            'EnforcedHashRocketStyle' => 'key',
+            'EnforcedColonStyle' => 'key'
+          }
+        }
+      end
+
       it 'registers offense for hash rocket syntax when new is possible' do
         expect_offense(<<~RUBY)
           x = { :a => 0 }
@@ -330,6 +339,28 @@ RSpec.describe RuboCop::Cop::Style::HashSyntax, :config do
 
       it 'does not register an offense when there is a symbol value' do
         expect_no_offenses('{ :a => :b, :c => :d }')
+      end
+
+      context 'with Layout/HashAlignment' do
+        let(:run_first) { [RuboCop::Cop::Layout::HashAlignment] }
+        it 'should not conflict' do
+          expect_offense(<<~RUBY)
+some_method(a: 'abc', b: 'abc',
+                      ^^ Use hash rockets syntax.
+            ^^ Use hash rockets syntax.
+        c: 'abc', d: 'abc'
+                  ^^ Use hash rockets syntax.
+        ^^ Use hash rockets syntax.
+        ^^^^^^^^ Align the keys of a hash literal if they span more than one line.
+        )
+      RUBY
+
+          expect_correction(<<~RUBY)
+some_method(:a => 'abc', :b => 'abc',
+            :c => 'abc', :d => 'abc'
+        )
+      RUBY
+        end
       end
     end
   end
@@ -650,4 +681,5 @@ RSpec.describe RuboCop::Cop::Style::HashSyntax, :config do
       expect(new_source).to eq('{ :a => 1, "b" => 2 }')
     end
   end
+
 end

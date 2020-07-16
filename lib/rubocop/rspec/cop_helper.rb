@@ -46,10 +46,12 @@ module CopHelper
     @last_corrector.rewrite
   end
 
-  def _investigate(cop, processed_source)
-    team = RuboCop::Cop::Team.new([cop], nil, raise_error: true)
+  def _investigate(cops, processed_source)
+    cop_array = Array(cops)
+    team = RuboCop::Cop::Team.new(cop_array, nil, raise_error: true)
     report = team.investigate(processed_source)
     @last_corrector = report.correctors.first || RuboCop::Cop::Corrector.new(processed_source)
+    report.correctors[1..-1].each { |corr| @last_corrector.merge!(corr) if corr }
     report.offenses
   end
 end

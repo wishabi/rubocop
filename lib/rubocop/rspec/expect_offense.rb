@@ -130,7 +130,7 @@ module RuboCop
 
         raise 'Error parsing example code' unless @processed_source.valid_syntax?
 
-        offenses = _investigate(cop, @processed_source)
+        offenses = _investigate(run_first_cops + [cop], @processed_source)
         actual_annotations =
           expected_annotations.with_offense_annotations(offenses)
 
@@ -158,7 +158,7 @@ module RuboCop
           # Prepare for next loop
           @processed_source = parse_source(corrected_source,
                                            @processed_source.path)
-          _investigate(cop, @processed_source)
+          _investigate(run_first_cops + [cop], @processed_source)
         end
 
         expect(new_source).to eq(correction)

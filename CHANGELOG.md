@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+* [#8347](https://github.com/rubocop-hq/rubocop/issues/8347): Fix creating syntax errors when combining `Layout/HashAlignment` with `Style/HashSyntax` set to `hash_rockets`. ([@dorner][])
+
 ### Bug fixes
 
 * [#8324](https://github.com/rubocop-hq/rubocop/issues/8324): Fix crash for `Layout/SpaceAroundMethodCallOperator` when using `Proc#call` shorthand syntax. ([@fatkodima][])
